@@ -86,10 +86,11 @@ export default function LoginPage() {
 	};
 
 	const formVariants = {
-		hidden: { opacity: 0, y: 30 },
+		hidden: { opacity: 0, y: 30, scale: 0.5 },
 		visible: {
 			opacity: 1,
 			y: 0,
+			scale: 1,
 			transition: { duration: 0.5, ease: "easeOut" },
 		},
 	};
@@ -101,8 +102,8 @@ export default function LoginPage() {
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
 			<motion.div
-				initial={{ opacity: 0, y: -20 }}
-				animate={{ opacity: 1, y: 0 }}
+				initial={{ opacity: 0, y: -20, scale: 1.5 }}
+				animate={{ opacity: 1, y: 0, scale: 1 }}
 				transition={{ duration: 0.5 }}
 			>
 				<Card className="w-full max-w-md backdrop-blur-lg bg-background/80 border-primary/20">
