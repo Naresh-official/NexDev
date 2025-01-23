@@ -295,7 +295,7 @@ export default function SignupPage() {
 						</div>
 					</CardContent>
 					<CardFooter className="flex justify-center">
-						<Link href={`/auth/login?redirectUrl={redirectUrl}`}>
+						<Link href={`/auth/login?redirectUrl=${redirectUrl}`}>
 							<Button
 								variant="link"
 								className="text-muted-foreground"

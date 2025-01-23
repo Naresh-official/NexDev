@@ -24,13 +24,13 @@ export async function middleware(req: NextRequest) {
 
 			const url = req.nextUrl.clone();
 			url.pathname = "/auth/login";
-			url.searchParams.set("redirectUrl", pathname);
+			url.searchParams.set("redirectUrl", pathname.trim());
 			return NextResponse.redirect(url);
 		}
 	}
 
 	// User is logged in and trying to access /auth routes
-	if (pathname.startsWith("/auth")) {
+	if (pathname.startsWith("/auth") && !pathname.startsWith("/auth/logout")) {
 		const url = req.nextUrl.clone();
 		url.pathname = "/dashboard";
 		return NextResponse.redirect(url);

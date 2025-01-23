@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthSessionProvider } from "@/context/authSessionProvider";
+import OptionalRootLayout from "@/components/OptionalRootLayout";
 
 const poppins = Poppins({
 	weight: ["400", "500", "600", "700"],
@@ -22,9 +23,9 @@ export default function RootLayout({
 		<html lang="en" className="dark">
 			<AuthSessionProvider>
 				<body
-					className={`${poppins.className} antialiased bg-background`}
+					className={`${poppins.className} antialiased bg-background h-screen`}
 				>
-					{children}
+					<OptionalRootLayout>{children}</OptionalRootLayout>
 				</body>
 			</AuthSessionProvider>
 		</html>
