@@ -1,6 +1,6 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 
-interface IDiscussion extends Document {
+export interface IDiscussion extends Document {
 	projectId: string;
 	messages: mongoose.Types.ObjectId[];
 	createdAt: Date;

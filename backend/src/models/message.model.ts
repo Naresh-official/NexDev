@@ -1,6 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 
-interface IMessage extends Document {
+export interface IMessage extends Document {
 	role: "USER" | "ASSISTANT";
 	content: string;
 	timestamp: Date;

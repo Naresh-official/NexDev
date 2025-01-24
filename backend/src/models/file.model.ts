@@ -1,6 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 
-interface IFile extends Document {
+export interface IFile extends Document {
 	projectId: string;
 	filePath: string;
 	fileName: string;

@@ -1,12 +1,14 @@
 import { Schema, model, Document } from "mongoose";
 
-interface IProject extends Document {
+export interface IProject extends Document {
 	name: string;
+	miniDescription: string;
 	description: string;
 	pages: {
-		name: string;
+		route: string;
 		description: string;
 	}[];
+	status: "IN_PROGRESS" | "COMPLETED";
 	userId: string;
 	createdAt: Date;
 	updatedAt: Date;
@@ -15,16 +17,22 @@ interface IProject extends Document {
 const projectSchema = new Schema<IProject>(
 	{
 		name: { type: String, required: true },
+		miniDescription: { type: String, required: true },
 		description: { type: String, required: true },
 		pages: [
 			{
-				name: { type: String, required: true },
+				route: { type: String, required: true },
 				description: { type: String, required: true },
 			},
 		],
+		status: {
+			type: String,
+			enum: ["IN_PROGRESS", "COMPLETED"],
+			default: "IN_PROGRESS",
+		},
 		userId: { type: String, required: true },
 	},
-	{ timestamps: true }  
+	{ timestamps: true }
 );
 
 const Project = model<IProject>("Project", projectSchema);
