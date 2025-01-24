@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { ApiError } from "./ApiError.js";
 
 const asyncHandler =
 	(requestHandler: Function) =>
@@ -7,13 +8,18 @@ const asyncHandler =
 			await requestHandler(req, res, next);
 		} catch (error: unknown) {
 			const message =
-				error instanceof Error ? error.message : "Something went wrong";
-			const stack = error instanceof Error ? error.stack : undefined;
+				error instanceof ApiError
+					? error.message
+					: "Something went wrong";
+			const stack = error instanceof ApiError ? error.stack : undefined;
+			const statusCode =
+				error instanceof ApiError ? error.statusCode : 500;
 
 			res.sendResponse({
 				success: false,
 				message,
-				statusCode: message === "Unauthorized" ? 401 : 500,
+				statusCode,
+				data: null,
 				error: stack,
 			});
 		}

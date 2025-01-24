@@ -7,6 +7,7 @@ export interface IProject extends Document {
 	pages: {
 		route: string;
 		description: string;
+		detailedDescription: string;
 	}[];
 	status: "IN_PROGRESS" | "COMPLETED";
 	userId: string;
@@ -23,6 +24,7 @@ const projectSchema = new Schema<IProject>(
 			{
 				route: { type: String, required: true },
 				description: { type: String, required: true },
+				detailedDescription: { type: String, required: true },
 			},
 		],
 		status: {

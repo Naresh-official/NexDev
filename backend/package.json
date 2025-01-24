@@ -2,10 +2,10 @@
 	"name": "backend",
 	"version": "1.0.0",
 	"type": "module",
-	"main": "src/index.ts",
+	"main": "dist/index.js",
 	"scripts": {
-		"start": "tsx src/index.ts",
-		"build": "tsx build",
+		"start": "node dist/index.js",
+		"build": "tsc",
 		"dev": "tsx watch src/index.ts"
 	},
 	"keywords": [],
@@ -29,6 +29,7 @@
 		"@types/express": "^5.0.0",
 		"@types/jsonwebtoken": "^9.0.7",
 		"@types/node": "^22.10.9",
-		"tsx": "^4.19.2"
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.3"
 	}
 }

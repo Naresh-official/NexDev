@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { projectDescriptionPrompt } from "../utils/prompts/projectDescriptionPrompt";
+import { projectDescriptionPrompt } from "../utils/prompts/projectDescriptionPrompt.js";
 
 export default async function generateProjectDescription(description: string) {
 	const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);

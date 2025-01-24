@@ -23,6 +23,7 @@ export const createProject = asyncHandler(
 			project.pages.push({
 				route: page.ROUTE,
 				description: page.PAGE_DESCRIPTION,
+				detailedDescription: "",
 			});
 		});
 
@@ -41,7 +42,7 @@ export const getAllProjects = asyncHandler(
 	async (req: Request, res: Response) => {
 		const projects = await Project.find({
 			userId: req.user?.id,
-		});
+		}).sort({ createdAt: -1 });
 		res.sendResponse({
 			statusCode: 200,
 			success: true,
@@ -50,3 +51,4 @@ export const getAllProjects = asyncHandler(
 		});
 	}
 );
+

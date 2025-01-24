@@ -19,6 +19,9 @@ app.use(apiResponseHandler);
 app.use(authMiddleware);
 
 import projectRoutes from "./routes/project.routes.js";
+import discussionRoutes from "./routes/discussion.routes.js";
+
 app.use("/api/v1/project", projectRoutes);
+app.use("/api/v1/discussion", discussionRoutes);
 
 export default app;
