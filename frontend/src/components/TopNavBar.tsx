@@ -11,14 +11,15 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export function TopNavBar() {
-  const pathname = usePathname();
 	return (
 		<header className="bg-background border-b px-6 py-3 flex items-center justify-between">
 			<div className="flex items-center">
-				<h1 className="text-xl font-bold">NexDev</h1>
+				<Link href="/dashboard" passHref>
+					<h1 className="text-xl font-bold">NexDev</h1>
+				</Link>
 			</div>
 			<div className="flex items-center space-x-4">
 				<Button variant="ghost" size="icon">

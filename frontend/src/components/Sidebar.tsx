@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 const navItems = [
 	{ title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
 	{ title: "Settings", href: "/settings", icon: Settings },
-	{ title: "Logout", href: "/auth/logout", icon: LogOut },
+	{ title: "Logout", href: "/api/auth/signout", icon: LogOut },
 ];
 
 export function Sidebar() {

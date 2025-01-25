@@ -121,7 +121,7 @@ async function handleSocialLogin(user: User, provider: string) {
 	});
 
 	if (!existingUser) {
-		await UserModel.create({
+		const newUser = await UserModel.create({
 			name: user?.name as string,
 			email: user?.email as string,
 			password: null,
@@ -129,8 +129,10 @@ async function handleSocialLogin(user: User, provider: string) {
 			avatarUrl: user?.image as string,
 			authProvider: provider,
 		});
+		user.id = newUser._id.toString();
 		return true;
 	} else if (existingUser.authProvider === provider) {
+		user.id = existingUser._id.toString();
 		return true;
 	} else {
 		console.error(
