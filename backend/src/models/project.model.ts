@@ -24,7 +24,7 @@ const projectSchema = new Schema<IProject>(
 			{
 				route: { type: String, required: true },
 				description: { type: String, required: true },
-				detailedDescription: { type: String, required: true },
+				detailedDescription: { type: String, default: "" },
 			},
 		],
 		status: {

@@ -52,3 +52,14 @@ export const getAllProjects = asyncHandler(
 	}
 );
 
+export const getProjectDetails = asyncHandler(
+	async (req: Request, res: Response) => {
+		const project = await Project.findById(req.params.id);
+		res.sendResponse({
+			statusCode: 200,
+			success: true,
+			message: "Project fetched successfully",
+			data: project,
+		});
+	}
+);

@@ -7,6 +7,7 @@ const asyncHandler =
 		try {
 			await requestHandler(req, res, next);
 		} catch (error: unknown) {
+			console.log(error); // TODO:Remove this in production
 			const message =
 				error instanceof ApiError
 					? error.message

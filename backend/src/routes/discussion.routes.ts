@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { createDiscussion } from "../controllers/discussion.controller.js";
+import {
+	createDiscussion,
+	getDiscussion,
+	sendMessageToAi,
+} from "../controllers/discussion.controller.js";
 
 const router = Router();
 
 router.post("/", createDiscussion);
+router.get("/:id", getDiscussion);
+router.patch("/", sendMessageToAi);
 
 export default router;

@@ -1,8 +1,18 @@
 import mongoose, { Schema, model, Document } from "mongoose";
+import { IMessage } from "./message.model.js";
 
 export interface IDiscussion extends Document {
+	_id: mongoose.Types.ObjectId;
 	projectId: string;
 	messages: mongoose.Types.ObjectId[];
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+export interface IPopulatedDiscussion extends Document {
+	_id: mongoose.Types.ObjectId;
+	projectId: string;
+	messages: IMessage[];
 	createdAt: Date;
 	updatedAt: Date;
 }
