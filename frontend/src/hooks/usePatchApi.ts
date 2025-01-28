@@ -2,17 +2,17 @@ import { useState } from "react";
 import axios from "axios";
 import { handleError } from "@/util/errorhandler";
 
-export function usePostApi<T, R = any>() {
+export function usePatchApi<T, R = any>() {
 	const [data, setData] = useState<R | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 
-	const postData = async (url: string, payload: T) => {
+	const patchData = async (url: string, payload: T) => {
 		setLoading(true);
 		setError(null);
-		console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL as string}${url}`);
+
 		try {
-			const response = await axios.post(
+			const response = await axios.patch(
 				`${process.env.NEXT_PUBLIC_BACKEND_URL as string}${url}`,
 				payload,
 				{
@@ -32,5 +32,5 @@ export function usePostApi<T, R = any>() {
 		}
 	};
 
-	return { data, error, loading, postData };
+	return { data, error, loading, patchData };
 }

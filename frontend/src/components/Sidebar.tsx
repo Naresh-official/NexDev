@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { IoLogoWebComponent } from "react-icons/io5";
 
 const navItems = [
 	{ title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -15,7 +16,8 @@ export function Sidebar() {
 	const pathname = usePathname();
 	return (
 		<aside className="bg-card border-r w-64 h-screen">
-			<div className="p-4">
+			<div className="p-4 flex items-center gap-2">
+				<IoLogoWebComponent className="h-10 w-10 text-primary" />
 				<h1 className="font-bold text-2xl">NexDev</h1>
 			</div>
 			<nav className="p-4">

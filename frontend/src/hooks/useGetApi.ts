@@ -10,7 +10,6 @@ export function useGetApi<T>(url: string) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				console.log(process.env.NEXT_PUBLIC_BACKEND_URL, url);
 				const response = await axios.get(
 					`${process.env.NEXT_PUBLIC_BACKEND_URL as string}${url}`,
 					{

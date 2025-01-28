@@ -12,6 +12,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
 	title: "NexDev",
 	description: "AI-Powered Nextjs Website Generator",
+	icons: {
+		icon: "/logo.svg",
+	},
 };
 
 export default function RootLayout({

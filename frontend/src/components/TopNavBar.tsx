@@ -12,12 +12,18 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { IoLogoWebComponent } from "react-icons/io5";
 
 export function TopNavBar() {
 	return (
 		<header className="bg-background border-b px-6 py-3 flex items-center justify-between">
 			<div className="flex items-center">
-				<Link href="/dashboard" passHref>
+				<Link
+					href="/dashboard"
+					className="flex items-center gap-2"
+					passHref
+				>
+					<IoLogoWebComponent className="h-8 w-8 text-primary" />
 					<h1 className="text-xl font-bold">NexDev</h1>
 				</Link>
 			</div>

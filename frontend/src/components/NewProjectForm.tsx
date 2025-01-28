@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { usePostApi } from "@/hooks/usePostApi";
+import { IProject } from "@/interfaces/project.interface";
 
 const formVariants = {
 	hidden: { opacity: 0, y: 30, scale: 0.5 },
@@ -27,10 +28,28 @@ interface INewProjectForm {
 
 export function NewProjectForm() {
 	const router = useRouter();
+
 	const { data, error, loading, postData } = usePostApi<
 		INewProjectForm,
 		{ _id: string }
 	>();
+	const {
+		data: discussion,
+		error: discussionError,
+		loading: discussionLoading,
+		postData: discussionPostData,
+	} = usePostApi<{ projectId: string }, IProject>();
+	useEffect(() => {
+		if (data) {
+			(async () => {
+				await discussionPostData("/discussion", {
+					projectId: data._id,
+				});
+				router.push(`/project/${data._id}`);
+			})();
+		}
+	}, [data]);
+
 	const [formData, setFormData] = useState<INewProjectForm>({
 		name: "",
 		description: "",
@@ -47,9 +66,6 @@ export function NewProjectForm() {
 		e.preventDefault();
 		if (isFormValid) {
 			await postData("/project", formData);
-		}
-		if (data?._id) {
-			router.push(`/project/${data._id}`);
 		}
 	};
 
@@ -114,10 +130,10 @@ export function NewProjectForm() {
 			</div>
 			<Button
 				type="submit"
-				disabled={!isFormValid || loading}
+				disabled={!isFormValid || loading || discussionLoading}
 				className="w-full"
 			>
-				{loading ? (
+				{loading || discussionLoading ? (
 					<>
 						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 						Generating Project...

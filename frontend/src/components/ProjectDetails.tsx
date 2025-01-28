@@ -10,13 +10,29 @@ import { useGetApi } from "@/hooks/useGetApi";
 import { IProject } from "@/interfaces/project.interface";
 import ReactMarkdown from "react-markdown";
 import { Skeleton } from "./ui/skeleton";
+import { useEffect } from "react";
+import { Button } from "./ui/button";
 
-export function ProjectDetails({ projectId }: { projectId: string }) {
+export function ProjectDetails({
+	projectId,
+	project,
+	setProject,
+}: {
+	projectId: string;
+	project: IProject | null;
+	setProject: React.Dispatch<React.SetStateAction<IProject | null>>;
+}) {
 	const {
-		data: project,
+		data: projectData,
 		error,
 		loading,
 	} = useGetApi<IProject>(`/project/${projectId}`);
+
+	useEffect(() => {
+		if (projectData) {
+			setProject(projectData);
+		}
+	}, [projectData]);
 
 	if (loading) {
 		return (
@@ -86,6 +102,11 @@ export function ProjectDetails({ projectId }: { projectId: string }) {
 					</AccordionItem>
 				))}
 			</Accordion>
+			{project?.status !== "COMPLETED" && (
+				<div className="flex justify-end mt-6">
+					<Button>Generate Code</Button>
+				</div>
+			)}
 		</div>
 	);
 }
