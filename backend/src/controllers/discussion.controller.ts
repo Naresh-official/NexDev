@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import asyncHandler from "../utils/asyncHandler.js";
 import Project, { IProject } from "../models/project.model.js";
 import { generatePageDescription } from "../lib/generatePageDescription.js";
-import { parseProjectDescription } from "../utils/parseProjectDescription.js";
+import { parsePageDescription } from "../utils/parsePageDescription.js";
 import { ApiError } from "../utils/ApiError.js";
 import Message, { IMessage } from "../models/message.model.js";
 import Discussion, {
@@ -10,6 +10,7 @@ import Discussion, {
 	IPopulatedDiscussion,
 } from "../models/discussion.model.js";
 import generateProjectDescription from "../lib/generateProjectDescription.js";
+import { parseProjectDescription } from "../utils/parseProjectDescription.js";
 
 export const createDiscussion = asyncHandler(
 	async (req: Request, res: Response) => {
@@ -26,7 +27,7 @@ export const createDiscussion = asyncHandler(
 			}
 		});
 
-		const discussion: IDiscussion = await Discussion.create({
+		const discussion: IDiscussion = new Discussion({
 			projectId,
 			messages: [],
 		});
@@ -39,28 +40,34 @@ export const createDiscussion = asyncHandler(
 			})),
 		};
 
-		const promptMessage: IMessage = await Message.create({
+		const promptMessage: IMessage = new Message({
 			role: "USER",
-			content: JSON.stringify(aiPrompt),
+			content:
+				"```json" +
+				JSON.stringify({
+					DESCRIPTION: project?.description,
+					MINI_DESCRIPTION: project?.miniDescription,
+					PAGES: project?.pages.map((page) => ({
+						ROUTE: page?.route,
+						PAGE_DESCRIPTION: page?.description,
+					})),
+				}) +
+				"```",
+			createdAt: new Date(),
 		});
 
 		const aiResponse = await generatePageDescription(
 			JSON.stringify(aiPrompt)
 		);
 
-		const aiMessage: IMessage = await Message.create({
-			role: "ASSISTANT",
-			content: aiResponse,
-		});
-
-		const { PAGES } = parseProjectDescription(aiResponse);
+		const { PAGES } = parsePageDescription(aiResponse);
 
 		project?.pages.forEach((page, index) => {
 			page.detailedDescription = PAGES[index]?.PAGE_DESCRIPTION;
 		});
 
-		discussion.messages.push(promptMessage._id, aiMessage._id);
-
+		discussion.messages.push(promptMessage._id);
+		await promptMessage.save();
 		await discussion.save();
 		await project?.save();
 
@@ -96,6 +103,7 @@ export const sendMessageToAi = asyncHandler(
 		const aiMessage: IMessage = await Message.create({
 			role: "USER",
 			content: message,
+			createdAt: new Date(),
 		});
 
 		const aiResponse = await generateProjectDescription(
@@ -107,6 +115,7 @@ export const sendMessageToAi = asyncHandler(
 
 		project.description = DESCRIPTION;
 		project.miniDescription = MINI_DESCRIPTION;
+		project.pages = [];
 		PAGES.forEach((page: { ROUTE: string; PAGE_DESCRIPTION: string }) => {
 			project.pages.push({
 				route: page.ROUTE,
@@ -118,6 +127,7 @@ export const sendMessageToAi = asyncHandler(
 		const aiResponseMessage: IMessage = await Message.create({
 			role: "ASSISTANT",
 			content: aiResponse,
+			createdAt: new Date(),
 		});
 
 		const aiPageResponse = await generatePageDescription(
@@ -127,7 +137,7 @@ export const sendMessageToAi = asyncHandler(
 			})
 		);
 
-		const { PAGES: NEW_PAGES } = parseProjectDescription(aiPageResponse);
+		const { PAGES: NEW_PAGES } = parsePageDescription(aiPageResponse);
 		project.pages.forEach((page, index) => {
 			page.detailedDescription = NEW_PAGES[index]?.PAGE_DESCRIPTION;
 		});
@@ -140,7 +150,7 @@ export const sendMessageToAi = asyncHandler(
 		res.sendResponse({
 			success: true,
 			message: "Success",
-			data: project,
+			data: { project, message: aiResponseMessage },
 			error: null,
 		});
 	}
@@ -149,12 +159,18 @@ export const sendMessageToAi = asyncHandler(
 export const getDiscussion = asyncHandler(
 	async (req: Request, res: Response) => {
 		const discussion: IPopulatedDiscussion | null =
-			await Discussion.findById(req.params.id).populate<{
+			await Discussion.findOne({
+				projectId: req.params.id,
+			}).populate<{
 				messages: IMessage[];
 			}>({
 				path: "messages",
 				model: "Message",
 			});
+
+		if (!discussion) {
+			throw new ApiError("Discussion not found").status(400);
+		}
 		res.sendResponse({
 			success: true,
 			message: "Success",

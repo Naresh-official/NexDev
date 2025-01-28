@@ -52,7 +52,7 @@ Here are the key components that should be included in your detailed response:
   "PAGES": [
     {
       "ROUTE": "<Route URL path (e.g., '/home', '/about-us')>",
-      "PAGE_DESCRIPTION": "<Detailed explanation of the page, its purpose, key features, layout, UI components, and any frontend-specific design choices. Each page description should be at least 30 words.>"
+      "PAGE_DESCRIPTION": "<Detailed explanation of the page, its purpose, key features, layout, UI components, and any frontend-specific design choices. Each page description should be at least 30 words and less than 80 words.>"
     },
     ...
   ]

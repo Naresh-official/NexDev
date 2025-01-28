@@ -7,8 +7,7 @@ export async function generatePageDescription(description: string) {
 		model: "gemini-2.0-flash-exp",
 		systemInstruction: enhancePageDescriptionPrompt as string,
 	});
-	const chat = model.startChat();
 
-	let result = await chat.sendMessage(description);
+	let result = await model.generateContent(description);
 	return result.response.text();
 }

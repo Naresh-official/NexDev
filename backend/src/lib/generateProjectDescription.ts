@@ -20,9 +20,11 @@ export default async function generateProjectDescription(
 
 	if (discussionId) {
 		const discussion: IPopulatedDiscussion | null =
-			await Discussion.findById(discussionId).populate<{
-				messages: IMessage[];
-			}>("messages");
+			await Discussion.findById(discussionId)
+				.populate<{
+					messages: IMessage[];
+				}>("messages")
+				.sort({ createdAt: -1 });
 
 		if (!discussion || discussion?.messages?.length === 0) {
 			throw new ApiError("Discussion not found").status(404);
@@ -37,6 +39,9 @@ export default async function generateProjectDescription(
 					},
 				],
 			})),
+			generationConfig: {
+				maxOutputTokens: 8000,
+			},
 		});
 
 		let result = await chat.sendMessage(description);
